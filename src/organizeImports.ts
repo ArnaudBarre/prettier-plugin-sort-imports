@@ -1,5 +1,5 @@
 import { builtinModules } from "node:module";
-import { TSESTree } from "@typescript-eslint/types";
+import type { TSESTree } from "@typescript-eslint/types";
 import { mergeImports } from "./mergeImports.ts";
 
 type Comment = { leading: boolean };
@@ -61,13 +61,13 @@ export const organizeImports = (ast: TSESTree.Program) => {
       hasChanged ||= block.some((imp, index) => imp.index !== index);
       if (hasChanged) needProgramReorder = true;
     }
-    block.forEach((imp, index) => {
+    for (const [index, imp] of block.entries()) {
       imp.node.range[0] = index === 0 ? start : -1;
       imp.node.range[1] = index === block.length - 1 ? end : -1;
       imp.node.specifiers.sort((a, b) =>
         naturalSort.compare(a.local.name, b.local.name),
       );
-    });
+    }
     if (blockIndex === 0 && fileComments.length) {
       if (!block[0].node.comments) block[0].node.comments = [];
       block[0].node.comments.unshift(...fileComments);

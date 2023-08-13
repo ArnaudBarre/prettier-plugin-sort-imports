@@ -1,8 +1,9 @@
 {
   "name": "@arnaud-barre/prettier-plugin-sort-imports",
   "description": "A small low-overhead TS-only Prettier plugin to sort imports",
+  "private": true,
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Arnaud Barré (https://github.com/ArnaudBarre)",
   "license": "MIT",
   "scripts": {
@@ -14,14 +15,14 @@
     "publish": "bun ci && cd dist && npm publish"
   },
   "peerDependencies": {
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.1"
   },
   "devDependencies": {
-    "@arnaud-barre/eslint-config": "^2.1.0",
-    "@arnaud-barre/tnode": "^0.18.0",
+    "@arnaud-barre/eslint-config": "^3.0.3",
+    "@arnaud-barre/tnode": "^0.19.0",
     "@types/node": "^18.16.19",
-    "eslint": "^8.44.0",
-    "prettier": "^3.0.0",
+    "eslint": "^8.47.0",
+    "prettier": "^3.0.1",
     "typescript": "^5.1.6"
   }
 }

@@ -62,12 +62,12 @@ import { bar, foo, foo2, Foo14, foo23 } from "foobar";
 );
 
 run(
-  "use natural sort",
+  "prefer type for the statement",
   `
-import { foo, bar } from "foobar";
+import { type bar, type foo } from "foobar";
 `,
   `
-import { bar, foo } from "foobar";
+import type { bar, foo } from "foobar";
 `,
 );
 

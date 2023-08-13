@@ -1,11 +1,11 @@
-import { TSESTree } from "@typescript-eslint/types";
+import type { TSESTree } from "@typescript-eslint/types";
 import type { ImportStatement } from "./organizeImports.ts";
 
 export const mergeImports = (
   block: ImportStatement[],
 ): boolean /* hasChanged */ => {
   const indexesToRemove: number[] = [];
-  block.forEach((imp, index) => {
+  for (const [index, imp] of block.entries()) {
     const next = block.at(index + 1);
     if (
       next &&
@@ -16,9 +16,9 @@ export const mergeImports = (
       const needConversion = imp.node.importKind !== next.node.importKind;
       if (needConversion && next.node.importKind === "type") {
         next.node.importKind = "value";
-        next.node.specifiers.forEach((it) => {
+        for (const it of next.node.specifiers) {
           it.importKind = "type";
-        });
+        }
       }
       for (const impSpe of imp.node.specifiers) {
         if (
@@ -41,12 +41,31 @@ export const mergeImports = (
       }
       indexesToRemove.unshift(index);
     }
-  });
-  if (indexesToRemove.length === 0) return false;
-  indexesToRemove.forEach((index) => {
+  }
+
+  let hasChanged = false;
+  for (const index of indexesToRemove) {
+    hasChanged = true;
     block.splice(index, 1);
-  });
-  return true;
+  }
+  for (const imp of block) {
+    if (
+      imp.node.importKind === "value" &&
+      imp.node.specifiers.length &&
+      imp.node.specifiers.every(
+        (impSpe) =>
+          impSpe.type === "ImportSpecifier" && impSpe.importKind === "type",
+      )
+    ) {
+      hasChanged = true;
+      imp.node.importKind = "type";
+      for (const it of imp.node.specifiers) {
+        (it as TSESTree.ImportSpecifier).importKind = "value";
+      }
+    }
+  }
+
+  return hasChanged;
 };
 
 const isMergeable = (
