@@ -19,7 +19,11 @@ export const organizeImports = (ast: TSESTree.Program) => {
       continue;
     }
     const relative = node.source.value.startsWith(".");
-    if (!relative && builtinModules.includes(node.source.value)) {
+    if (
+      !relative &&
+      builtinModules.includes(node.source.value) &&
+      node.source.value !== "ws" // builtin in bun only
+    ) {
       node.source.value = `node:${node.source.value}`;
       node.source.raw = `"${node.source.value}"`;
     }
