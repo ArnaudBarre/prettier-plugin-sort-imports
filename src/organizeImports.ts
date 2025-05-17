@@ -1,21 +1,21 @@
 import { builtinModules } from "node:module";
-import type { TSESTree } from "@typescript-eslint/types";
+import type { ImportDeclaration, Program } from "oxc-parser";
 import { mergeImports } from "./mergeImports.ts";
 
 type Comment = { leading: boolean };
 export type ImportStatement = {
   index: number;
-  node: TSESTree.ImportDeclaration & { comments?: Comment[] };
+  node: ImportDeclaration & { comments?: Comment[] };
   groupIndex: number;
 };
 
-export const organizeImports = (ast: TSESTree.Program) => {
+export const organizeImports = (ast: Program) => {
   const blocks: ImportStatement[][] = [[]];
   let firstNonImportIndex: undefined | number;
   let lastImportIndex = 0;
   for (const [index, node] of ast.body.entries()) {
     if (node.type !== "ImportDeclaration") {
-      if (firstNonImportIndex === undefined) firstNonImportIndex = index;
+      firstNonImportIndex ??= index;
       continue;
     }
     const relative = node.source.value.startsWith(".");
@@ -57,8 +57,8 @@ export const organizeImports = (ast: TSESTree.Program) => {
       fileComments.push(...block[0].node.comments.filter((c) => c.leading));
       block[0].node.comments = block[0].node.comments.filter((c) => !c.leading);
     }
-    const start = block[0].node.range[0];
-    const end = block.at(-1)!.node.range[1];
+    const start = block[0].node.start;
+    const end = block.at(-1)!.node.end;
     block.sort(compareImport);
     let hasChanged = mergeImports(block);
     if (!needProgramReorder) {
@@ -66,14 +66,14 @@ export const organizeImports = (ast: TSESTree.Program) => {
       if (hasChanged) needProgramReorder = true;
     }
     for (const [index, imp] of block.entries()) {
-      imp.node.range[0] = index === 0 ? start : -1;
-      imp.node.range[1] = index === block.length - 1 ? end : -1;
+      imp.node.start = index === 0 ? start : -1;
+      imp.node.end = index === block.length - 1 ? end : -1;
       imp.node.specifiers.sort((a, b) =>
         naturalSort.compare(a.local.name, b.local.name),
       );
     }
     if (blockIndex === 0 && fileComments.length) {
-      if (!block[0].node.comments) block[0].node.comments = [];
+      block[0].node.comments ??= [];
       block[0].node.comments.unshift(...fileComments);
     }
   }

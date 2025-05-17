@@ -1,22 +1,22 @@
-#!/usr/bin/env tnode
+#!/usr/bin/env bun
 import { execSync } from "node:child_process";
 import { rmSync, writeFileSync } from "node:fs";
-import { buildSync } from "esbuild";
 import packageJSON from "../package.json";
 
 rmSync("dist", { force: true, recursive: true });
 
-buildSync({
-  bundle: true,
-  entryPoints: ["src/index.ts"],
+await Bun.build({
+  entrypoints: ["src/index.ts"],
   outdir: "dist",
   format: "esm",
-  platform: "node",
-  target: "node16",
-  external: Object.keys(packageJSON.peerDependencies),
+  target: "node",
+  external: [
+    ...Object.keys(packageJSON.peerDependencies),
+    ...Object.keys(packageJSON.dependencies),
+  ],
 });
 
-execSync("cp -r LICENSE README.md dist/");
+execSync("cp LICENSE README.md dist/");
 
 writeFileSync(
   "dist/package.json",
@@ -28,9 +28,10 @@ writeFileSync(
       version: packageJSON.version,
       author: packageJSON.author,
       license: packageJSON.license,
-      main: "index.js",
+      exports: { ".": "./index.js" },
       repository: "ArnaudBarre/prettier-plugin-sort-imports",
       peerDependencies: packageJSON.peerDependencies,
+      dependencies: packageJSON.peerDependencies,
     },
     null,
     2,

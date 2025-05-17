@@ -3,26 +3,29 @@
   "description": "A small low-overhead TS-only Prettier plugin to sort imports",
   "private": true,
   "type": "module",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "author": "Arnaud Barré (https://github.com/ArnaudBarre)",
   "license": "MIT",
   "scripts": {
     "build": "scripts/bundle.ts",
-    "test": "tnode src/index.test.ts",
-    "lint": "eslint src scripts --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "test": "node src/index.test.ts",
+    "lint": "eslint --max-warnings 0",
     "prettier": "prettier --cache --no-config --check '**/*.{cjs,ts,json,md}'",
     "ci": "bun tsc && bun lint && bun prettier && bun run test && bun run build",
     "publish": "bun ci && cd dist && npm publish"
   },
+  "prettier": {},
   "peerDependencies": {
-    "prettier": "^3"
+    "prettier": "^3.5.3"
+  },
+  "dependencies": {
+    "prettier-oxc-parser": "^0.1.0"
   },
   "devDependencies": {
-    "@arnaud-barre/eslint-config": "^3.1.5",
-    "@arnaud-barre/tnode": "^0.19.2",
-    "@types/node": "^20.10.2",
-    "eslint": "^8.55.0",
-    "prettier": "3.0.3",
-    "typescript": "~5.2"
+    "@arnaud-barre/eslint-config": "^5.3.1",
+    "@types/bun": "^1.2.13",
+    "eslint": "^9.26.0",
+    "prettier": "^3.5.3",
+    "typescript": "~5.8"
   }
 }

@@ -4,7 +4,7 @@ A small low-overhead TS-only Prettier plugin to sort imports. Inspired by [IanVS
 
 This package is using a monkey-patch of the estree [pinter preprocess](https://prettier.io/docs/en/plugins.html#optional-preprocess) to avoid a double code -> AST -> code pass. This is obviously not stable, but allows to get everything I need for 200 lines of code and without any dependency.
 
-The plugin is published as an ESM module, so it requires Prettier 3.
+It's also using [prettier-oxc-parser](https://github.com/ArnaudBarre/prettier-oxc-parser) as the TS parser in `0.2.0`.
 
 This plugin sorts imports into 4 groups (`bun:`, `node:`, `<packages>`, `.<relative>`), with a natural sorting inside each group. Comments follow the imports they are attached too. There is no special handling for TS paths.
 

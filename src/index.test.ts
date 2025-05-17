@@ -7,6 +7,7 @@ const run = (name: string, actual: string, expected: string) => {
   void test(name, async () => {
     const output = await format(actual.trim(), {
       parser: "typescript",
+      filepath: "test.ts",
       plugins: [{ parsers }],
     });
     assert.equal(output, expected.trimStart());

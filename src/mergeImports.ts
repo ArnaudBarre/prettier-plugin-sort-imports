@@ -1,4 +1,4 @@
-import type { TSESTree } from "@typescript-eslint/types";
+import type { ImportSpecifier } from "oxc-parser";
 import type { ImportStatement } from "./organizeImports.ts";
 
 export const mergeImports = (
@@ -60,7 +60,7 @@ export const mergeImports = (
       hasChanged = true;
       imp.node.importKind = "type";
       for (const it of imp.node.specifiers) {
-        (it as TSESTree.ImportSpecifier).importKind = "value";
+        (it as ImportSpecifier).importKind = "value";
       }
     }
   }
@@ -71,5 +71,5 @@ export const mergeImports = (
 const isMergeable = (
   node: ImportStatement["node"],
 ): node is Omit<ImportStatement["node"], "specifiers"> & {
-  specifiers: TSESTree.ImportSpecifier[];
+  specifiers: ImportSpecifier[];
 } => node.specifiers.every((spe) => spe.type === "ImportSpecifier");
