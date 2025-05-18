@@ -31,7 +31,7 @@ writeFileSync(
       exports: { ".": "./index.js" },
       repository: "ArnaudBarre/prettier-plugin-sort-imports",
       peerDependencies: packageJSON.peerDependencies,
-      dependencies: packageJSON.peerDependencies,
+      dependencies: packageJSON.dependencies,
     },
     null,
     2,

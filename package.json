@@ -3,7 +3,7 @@
   "description": "A small low-overhead TS-only Prettier plugin to sort imports",
   "private": true,
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Arnaud Barré (https://github.com/ArnaudBarre)",
   "license": "MIT",
   "scripts": {
