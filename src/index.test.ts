@@ -129,12 +129,14 @@ run(
   `
 import { readFile } from "fs";
 import assert from "node:assert";
+import { it } from "node:test";
 import { test } from "bun:test";
 `,
   `
 import { test } from "bun:test";
 import assert from "node:assert";
 import { readFile } from "node:fs";
+import { it } from "node:test";
 `,
 );
 

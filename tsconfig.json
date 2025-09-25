@@ -1,11 +1,11 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    /* Target node 20 */
+    /* Target node 22 */
     "target": "ES2022",
     "module": "ESNext",
     "moduleDetection": "force",
-    "lib": ["ES2023"],
+    "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Iterator"],
     "types": ["bun", "tsl/patches"],
     "skipLibCheck": true,
 
@@ -18,8 +18,6 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": true,
     "noUncheckedSideEffectImports": true,

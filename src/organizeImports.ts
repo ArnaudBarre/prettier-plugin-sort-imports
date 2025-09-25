@@ -21,6 +21,7 @@ export const organizeImports = (ast: Program) => {
     const relative = node.source.value.startsWith(".");
     if (
       !relative &&
+      !node.source.value.includes(":") &&
       builtinModules.includes(node.source.value) &&
       node.source.value !== "ws" // builtin in bun only
     ) {
